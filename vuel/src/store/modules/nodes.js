@@ -1,3 +1,5 @@
+import api from '@/background_utils/background_api'
+
 const state = {
   nodes: [
     {
@@ -25,6 +27,7 @@ const getters = {
 
 const actions = {
   async fetchNodes ({ commit }) {
+    console.log(api)
   }
 }
 
