@@ -5,15 +5,15 @@ const state = {
     {
       id: 1,
       hostname: 'worker01',
-      cpu_usage: 0,
+      cpu_usage: 30,
       gpu_usage: 1,
-      mem_usage: 2,
+      mem_usage: 100,
       storage_usage: 3
     },
     {
       id: 2,
       hostname: 'worker02',
-      cpu_usage: 1,
+      cpu_usage: 20,
       gpu_usage: 2,
       mem_usage: 3,
       storage_usage: 4
