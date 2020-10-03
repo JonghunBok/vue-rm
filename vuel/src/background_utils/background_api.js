@@ -8,7 +8,12 @@ const BackgroundApiService = {
           console.warn(err)
         }
 
-        resolve (stdout ? stdout : stderr)
+        if (stderr) {
+          console.warn(stderr)
+          resolve(stderr)
+        }
+
+        resolve(stdout)
       })
     })
   }
