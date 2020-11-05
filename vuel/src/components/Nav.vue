@@ -1,11 +1,9 @@
 <template>
   <div id="wrap">
-    <section class="left">
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-    </section>
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
   </div>
 </template>
 
@@ -25,13 +23,6 @@ export default {
   flex-flow: row wrap;
   width: 100%;
   margin: 0 auto;
-}
-.left {
-  display: flex;
-  order: 1;
-  width: 15%;
-  height: 600px;
-  flex-flow: column nowrap;
 }
 .left div{
   flex: 1 1 0;

@@ -1,37 +1,61 @@
-import api from '@/background_utils/background_api'
+import { ipcRenderer } from 'electron'
 
 const state = {
-  nodes: [
-    {
-      id: 1,
-      hostname: 'worker01',
-      cpu_usage: 30,
-      gpu_usage: 1,
-      mem_usage: 100,
-      storage_usage: 3
-    },
-    {
-      id: 2,
-      hostname: 'worker02',
-      cpu_usage: 20,
-      gpu_usage: 2,
-      mem_usage: 3,
-      storage_usage: 4
-    }
-  ]
+  nodes: { }
 }
 
 const getters = {
-  allNodes: state => state.nodes
+  getAllNodes: state => state.nodes,
+  getGroups: state => Object.keys(state.nodes),
+  getNodes: state => group => state.nodes[group],
+  getNodeById: state => (group, id) => state.nodes[group].find(node => node.id === id)
 }
 
 const actions = {
+  async readNodes ({ commit }) {
+    console.log('read nodes')
+    const nodes = await ipcRenderer.invoke('readNodes', {
+      addr: 'readNodes'
+    })
+
+    console.log('read nodes')
+    console.log(nodes)
+
+    commit('setNodes', nodes)
+  },
+
+  async setNodes ({ commit }, nodes) {
+    await ipcRenderer.invoke('writeNodes', {
+      addr: 'writeNodes',
+      nodes: nodes
+    })
+
+    commit('setNodes', nodes)
+  },
+
+  async addNode ({ state, commit, dispatch }, { group, node }) {
+    // await api.writeNodes([...state.nodes, node])
+    console.log('adding ', node)
+    console.log('to ', group)
+    const nodes = { ...state.nodes }
+    nodes[group] = nodes[group] ? [...nodes[group], node] : [node]
+
+    await dispatch('setNodes', nodes).catch(e => {
+      console.log(e)
+      return false
+    })
+
+    return true
+  },
+
   async fetchNodes ({ commit }) {
-    console.log(api)
+    // console.log(api)
   }
 }
 
-const mutations = {}
+const mutations = {
+  setNodes: (state, nodes) => { state.nodes = nodes }
+}
 
 export default {
   state,

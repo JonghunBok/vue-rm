@@ -1,8 +1,7 @@
 <template>
   <v-card
     width="200"
-    class="pa-4 text-center"
-    justify="center"
+    class="d-flex pa-4 justify-center align-center"
   >
     <v-dialog
       v-model="dialog"
@@ -33,14 +32,14 @@
               <v-col cols="12">
                 <v-text-field
                   label="IP 주소"
-                  v-model="ip_addr"
+                  v-model="ip"
                   required
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
-                  label="접속할 username"
-                  v-model="username"
+                  label="접속할 user"
+                  v-model="user"
                   required
                 ></v-text-field>
               </v-col>
@@ -55,7 +54,7 @@
             </v-row>
           </v-container>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="d-flex justify-end">
           <v-btn @click="saveNode(); dialog = false;">
             save
           </v-btn>
@@ -72,21 +71,34 @@
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'NewNameCard',
+  name: 'NewNodeCard',
   data: () => ({
     dialog: false,
     hostname: '',
-    ip_addr: '',
-    username: '',
+    ip: '',
+    user: '',
     password: ''
   }),
+  props: {
+    group: String
+  },
   methods: {
     ...mapActions(['addNode']),
-    saveNode () {
-      console.log(this.hostname)
-      console.log(this.ip_addr)
-      console.log(this.username)
-      console.log(this.password)
+    async saveNode () {
+      const newNode = {
+        hostname: this.hostname,
+        ip: this.ip,
+        user: this.user,
+        password: this.password
+      }
+
+      console.log('newNode: ', this.group)
+      console.log('newNode: ', { ...newNode })
+
+      await this.addNode({
+        group: this.group,
+        node: newNode
+      })
     }
   }
 }
